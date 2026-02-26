@@ -122,4 +122,7 @@ Random Forest under-sampling provided similar profit under budget constraints.
 - Data visualization
 
 
-## 📎 Repository Structure
+## Key Takeaway
+
+Customer engagement is the strongest predictor of retention.  
+Machine Learning models can effectively identify high-risk customers and significantly improve marketing ROI when integrated into decision-making processes.
