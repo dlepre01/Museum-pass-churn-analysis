@@ -1,67 +1,125 @@
-# Museum-pass-churn-analysis — Big Data in Economics Project
+# Turin Museums — Churn Prediction & Customer Analytics  
+**Course:** Big Data in Economics  
 
-**Course:** Big Data in Economics (A.Y. 2024/2025)  
-**Type:** Economics for Data Science — project work  
-**Goal:** Apply the course methods to a real dataset and produce a business-style **pitch** supported by data preparation + ML/analytics results. 
+## Objective
 
-## Business Problem
-The **Museum Pass** gives access to a large network of museums in Turin and surrounding areas (1-year validity, unlimited visits).  
-A significant share of users **does not renew**, generating high churn. The project focuses on:
+Apply Big Data and Machine Learning techniques to a real-world dataset in order to:
 
-- Identifying **drivers of churn**
-- Building **predictive models** to anticipate churn
-- Designing a **targeted marketing campaign** to improve retention and profitability :contentReference[oaicite:1]{index=1}
+- Understand the determinants of customer churn  
+- Build predictive models to identify at-risk customers  
+- Simulate a data-driven marketing campaign  
+- Present results in a business-style pitch format  
 
-## Dataset
-Three main sources:
 
-- `data1.csv` — general customer information + churn label (`si2014`)
-- `an13.csv` — demographics, payment info, discount/reduction types
-- `in13.csv` — museum visits (date, time, museum) :contentReference[oaicite:2]{index=2}
+## Business Context
 
-## Data Preparation & Feature Engineering (high level)
-Key steps performed:
+The **Museum Pass** allows unlimited access to a network of museums in Turin and surrounding areas for one year.
 
-- Cleaning and filtering unrealistic ages, invalid timestamps, and non-useful fields
-- Building the churn label: **churn = 1 if customer did not renew**
-- Aggregating visit-level data per customer (`numero_visite`, `musei_unici`, `ultimo_ingr_mese`, `quota_risparmiata`, …)
-- Encoding categorical variables (binarization / one-hot), and multicollinearity removal :contentReference[oaicite:3]{index=3}
+A relevant share of customers does not renew their subscription (churn ≈ 30%).  
+The goal of the project is to:
 
-## Analysis & Methods
-The workflow includes:
+- Identify behavioral and demographic patterns linked to churn  
+- Build predictive models  
+- Estimate profitability of a retention campaign  
 
-- Exploratory insights on museums and customers
-- **Correlation analysis** (low single-feature correlation, but clear signal from engagement variables)
-- **Clustering** (Self-Organizing Map + 2 clusters: low vs high engagement)
-- **Customer network analysis** (users connected by repeated shared visits)
-- **Causal analysis** (Propensity Score Matching to test gender effect on churn)
-- **Churn prediction** (CART, Random Forest, KNN, AdaBoost; also under-sampling variants) :contentReference[oaicite:4]{index=4}
+## Dataset Description
 
-## Main Results
-- Churn rate around **30.6%**
-- Engagement is strongly protective: more visits / more savings → lower churn
-- SOM clustering separates **at-risk low engagement** vs **loyal high engagement**
-- Small but significant gender effect (women slightly less likely to churn)
-- Best predictive performance: **AdaBoost** (top AUC), with **Random Forest (under-sampling)** close behind and often more cost-efficient for campaign constraints :contentReference[oaicite:5]{index=5}
+The project uses three datasets:
+
+### `data1.csv`
+- `Codcliente`: customer ID  
+- `Si2014`: churn label (0 = churn)  
+- `ultimo_ing.x`: date of last visit  
+- `abb13`: starting date of card (2013)  
+- `abb14`: renewal date in 2014 (if renewed)  
+
+### `an13.csv`
+- `Codcliente`: customer ID  
+- `data_inizio`: card activation date  
+- `importo`: price paid  
+- `sconto`: discount type  
+- `Riduzione`: price reduction category (e.g., student, over 60)  
+- `Tipo_pag`: payment method  
+- `Agenzia_tipo`: purchase channel (online, museum, association, etc.)  
+- `Sesso`: gender  
+- `Data di nascita`: birth year  
+- `Professione`: employment status  
+- `Cap`: zip code  
+- `Nuovo_abonn`: new subscriber indicator  
+
+### `in13.csv`
+- `datai`: visit date  
+- `orai`: visit time  
+- `importo`: ticket value (not paid due to subscription)  
+- `museo`: museum name  
+- `prov_museo`: museum province  
+- `com_museo`: museum city  
+- `Codcliente`: customer ID  
+
+Dataset variable documentation available in:  
+`take_home_file_description.pdf`
+
+
+## Data Processing & Feature Engineering
+
+- Churn variable construction
+- Cleaning inconsistent ages and timestamps
+- Aggregation of visit-level data into customer-level features
+- Creation of behavioral indicators:
+  - Number of visits
+  - Number of unique museums
+  - Month of last visit
+  - Estimated savings (subscription value)
+- Encoding categorical variables
+- Multicollinearity removal
+
+## Methods
+
+### Exploratory Analysis
+- Churn rate ≈ 30.6%
+- Engagement strongly correlated with retention
+
+### Clustering
+- Self-Organizing Map (SOM)
+- Two main behavioral clusters:
+  - Low engagement → high churn risk
+  - High engagement → loyal users
+
+### Network Analysis
+- Customer network based on co-visits
+
+### Causal Inference
+- Propensity Score Matching (PSM)
+- Small but significant gender effect on churn
+
+### Predictive Models
+- CART
+- Random Forest
+- KNN
+- AdaBoost
+- Under-sampling strategies
+
+**Best predictive performance:** AdaBoost (highest AUC)
+
 
 ## Marketing Campaign Simulation
-A profitability scenario evaluates contacting customers at risk of churn:
 
-- +10€ net profit for each contacted churner who renews
-- −2€ cost for each contacted non-churner
+Profit function:
 
-AdaBoost yields the highest maximum cumulative profit; Random Forest under-sampling provides similar profit with fewer contacts in budget-tight settings. 
+- +10€ for correctly identified churners who renew  
+- −2€ cost for contacting non-churners  
 
-## Repository Contents
-- `Big_Data_Eco_code_LEPRE.Rmd` — analysis notebook / report code
-- `Big_data_eco_pres_LEPRE.pdf` — final slides (business-style pitch) 
+AdaBoost maximized cumulative profit.  
+Random Forest under-sampling provided similar profit under budget constraints.
 
-## How to Run
-> If you want this section fully accurate (packages + commands), keep it minimal until you confirm your environment.
+## Tech Stack
 
-1. Open `Big_Data_Eco_code_LEPRE.Rmd` in RStudio
-2. Install required R packages (as indicated in the file)
-3. Knit to HTML/PDF or run chunks interactively
+- R
+- Machine Learning (classification models)
+- Clustering (SOM)
+- Causal Inference (PSM)
+- Network analysis
+- Data visualization
 
-## Credits
-Project work developed for the course “Big Data in Economics”.
+
+## 📎 Repository Structure
